@@ -1,0 +1,5 @@
+node_modules
+compressed_files/*
+uploads/*
+!compressed_files/.gitkeep
+!uploads/.gitkeep
