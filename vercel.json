@@ -1,10 +1,10 @@
 {
     "version": 2,
     "builds": [
-      {
-        "src": "index.js",
-        "use": "@now/node"
-      }
+        { "src": "index.js", "use": "@vercel/node" },
+        { "src": "upload/**/*", "use": "@vercel/static" },
+        { "src": "compressed_files/**/*", "use": "@vercel/static" },
+        { "src": "lzw_str.py", "use": "@vercel/python" }
     ],
     "routes": [
       {
