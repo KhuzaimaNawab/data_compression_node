@@ -4,9 +4,16 @@ const app = express();
 const multer = require('multer');
 const fs = require("fs");
 const path = require("path");
+const cors = require("cors");
+const bodyParser = require('body-parser');
+
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'compressed_files')));
+app.use(cors({
+    origin: "*",
+}))
+app.use(bodyParser.raw({ type: 'application/octet-stream', limit: '50mb' }));
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -38,7 +45,7 @@ app.post('/compress', upload.single('file'), (req, res) => {
         const ratio = (Number(fileStats.size) / Number(fileOriginalSize) * 100).toFixed(2);
         console.log(`Ratio of compression: ${ratio}%`);
         const fullUrl = req.protocol + '://' + req.get('host') + "/" + fileName + ".lzm";
-        return res.status(200).send({ compressedFileLink: fullUrl, compressedData: data.toString(), ratio: ratio});
+        return res.status(200).send({ compressedFileLink: fullUrl, ratio: ratio});
     });
 
     pythonProcess.stderr.on('data', (data) => {
