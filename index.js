@@ -33,7 +33,7 @@ app.post('/compress', upload.single('file'), (req, res) => {
     let fileName = req.file.filename;
     const fileDestination = req.file.destination;
     const fileData = fs.readFileSync(`${fileDestination}/${fileName}`, {encoding:'utf8'});
-    pythonProcess = spawn('python', ['lzw_str.py',fileData]);
+    pythonProcess = spawn('python', ['lzw_compress.py',fileData]);
 
     pythonProcess.stdout.on('data', (data) => {
         console.log("stdout: " + data);
@@ -58,6 +58,40 @@ app.post('/compress', upload.single('file'), (req, res) => {
         console.log(`child process exited with code ${code}`);
     });
 });
+
+// app.post('/decompress', upload.single('file'), (req, res) => {
+//     console.log(req.file)
+//     // console.log(req.file);
+//     //const fileOriginalSize = Number(req.file.size);
+//     let fileName = req.file.filename;
+//     const fileDestination = req.file.destination;
+//     const fileData = fs.readFileSync(`${fileDestination}/${fileName}`, {encoding:'utf8'});
+//     pythonProcess = spawn('python', ['lzw_decompress.py',fileData]);
+    
+
+//     pythonProcess.stdout.on('data', (data) => {
+//         console.log("stdout: " + data);
+//         fileName = fileName.split(".")[0].toString();
+//         fs.appendFileSync(`./compressed_files/${fileName}.txt`, data, function (err) {
+//             if (err) throw err;
+//         });
+//         //const fileStats = fs.statSync(`./compressed_files/${fileName}.txt`);
+//         //const ratio = (Number(fileStats.size) / Number(fileOriginalSize) * 100).toFixed(2);
+//         //console.log(`Ratio of compression: ${ratio}%`);
+//         const fullUrl = req.protocol + '://' + req.get('host') + "/" + fileName + ".txt";
+//         return res.status(200).send({ compressedFileLink: fullUrl, compression: fileData});
+//     });
+
+//     pythonProcess.stderr.on('data', (data) => {
+//         console.error(`stderr: ${data}`);
+//         return res.status(500).send('An error occurred');
+//     });
+
+//     // Handle the Python process finishing
+//     pythonProcess.on('close', (code) => {
+//         console.log(`child process exited with code ${code}`);
+//     });
+// });
 
 app.listen(3000, () => {
     console.log("Server listening on port 3000");
