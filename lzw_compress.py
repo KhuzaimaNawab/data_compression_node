@@ -1,5 +1,6 @@
 import struct
 import sys
+import os
 
 def compress(content):
     # Convert content to bytes
@@ -45,6 +46,7 @@ def compress(content):
 # Get the input string from the command line arguments
 input_string = sys.argv[1]
 
-# Call the compress_string function and write the compressed string to the standard output
+# # Call the compress_string function and write the compressed string to the standard output
 compressed_string = compress(input_string)
+# print(compressed_string)
 sys.stdout.buffer.write(compressed_string)

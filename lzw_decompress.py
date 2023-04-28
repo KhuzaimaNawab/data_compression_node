@@ -1,8 +1,12 @@
 import struct
 import sys
 
+
 def decompress(content):
     # Convert content to codes
+    with open(content, "rb") as f:
+        content = f.read()
+        
     codes = []
     for i in range(0, len(content), 2):
         code = struct.unpack("<H", content[i:i+2])[0]
@@ -44,8 +48,8 @@ def decompress(content):
     return decompressed_content
 
 
-# Get the input string from the command line arguments
-input_string = sys.argv[1].encode().decode('unicode_escape').encode()
-
+input_string = sys.argv[1]
 # Call the compress_string function and write the compressed string to the standard output
 decompressed_string = decompress(input_string)
+# print(decompressed_string)
+sys.stdout.write(decompressed_string)
